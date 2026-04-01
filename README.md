@@ -1,11 +1,3 @@
----
-
-# MASLCE - Master LCE Compendium
-
-**Author : David Graz**
-
----
-
 ## 1. Project Overview
 
 This repository provides a **complete, reproducible synthesis** of the MAS LCE (Master of Advanced Studies in Economic Crime Investigation) research project conducted by David Graz.
