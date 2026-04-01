@@ -1,0 +1,2 @@
+These three source PDFs are bundled because they define the research question, the final thesis narrative, and the defense summary.
+The full extracted _Master_LCE source tree is not redistributed inside this package because the raw archive contains legacy working files, duplicate versions, and unsafe credential-bearing scraper scripts. Instead, the package includes a full source inventory, canonical datasets, and discrepancy tables.

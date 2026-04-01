@@ -1,0 +1,260 @@
+{
+  "theory": {
+    "n_rows": 315,
+    "status_counts": {
+      "POSITIVE": 114,
+      "DETECTED": 114,
+      "IDENTIFIED": 80,
+      "NEGATIVE": 7
+    },
+    "target_counts": {
+      "acceptable": 34,
+      "unfavorable": 281
+    }
+  },
+  "case": {
+    "n_rows": 2166,
+    "status_counts": {
+      "DETECTED": 1546,
+      "NEGATIVE": 343,
+      "IDENTIFIED": 259,
+      "POSITIVE": 18
+    },
+    "target_counts": {
+      "acceptable": 1015,
+      "unfavorable": 1151
+    }
+  },
+  "evaluations": {
+    "theory_original": {
+      "evaluation": "exploratory_original_script",
+      "dataset": "exploratory_sample",
+      "n_rows": 315,
+      "class_0": 34,
+      "class_1": 281,
+      "tn": 9,
+      "fp": 25,
+      "fn": 15,
+      "tp": 266,
+      "accuracy": 0.873015873015873,
+      "precision": 0.9140893470790378,
+      "recall": 0.9466192170818505,
+      "f1": 0.9300699300699301,
+      "specificity": 0.2647058823529412,
+      "auc": 0.8255181075989115
+    },
+    "theory_clean": {
+      "evaluation": "exploratory_clean_rerun",
+      "dataset": "exploratory_sample",
+      "n_rows": 315,
+      "class_0": 34,
+      "class_1": 281,
+      "tn": 8,
+      "fp": 26,
+      "fn": 12,
+      "tp": 269,
+      "accuracy": 0.8793650793650793,
+      "precision": 0.911864406779661,
+      "recall": 0.9572953736654805,
+      "f1": 0.9340277777777778,
+      "specificity": 0.23529411764705882,
+      "auc": 0.8414800083734562
+    },
+    "case_original": {
+      "evaluation": "case_study_original_script",
+      "dataset": "case_study_sample",
+      "n_rows": 2166,
+      "class_0": 1015,
+      "class_1": 1151,
+      "tn": 944,
+      "fp": 71,
+      "fn": 29,
+      "tp": 1122,
+      "accuracy": 0.9538319482917821,
+      "precision": 0.9404861693210393,
+      "recall": 0.9748045178105995,
+      "f1": 0.9573378839590444,
+      "specificity": 0.9300492610837439,
+      "auc": 0.9775496141714425
+    },
+    "theory_confirmed_subset": {
+      "evaluation": "confirmed_subset_validation",
+      "dataset": "exploratory_sample",
+      "n_rows": 121,
+      "class_0": 7,
+      "class_1": 114,
+      "tn": 5,
+      "fp": 2,
+      "fn": 0,
+      "tp": 114,
+      "accuracy": 0.9834710743801653,
+      "precision": 0.9827586206896551,
+      "recall": 1.0,
+      "f1": 0.991304347826087,
+      "specificity": 0.7142857142857143,
+      "auc": 0.9135338345864662
+    },
+    "case_confirmed_subset": {
+      "evaluation": "confirmed_subset_validation",
+      "dataset": "case_study_sample",
+      "n_rows": 361,
+      "class_0": 343,
+      "class_1": 18,
+      "tn": 343,
+      "fp": 0,
+      "fn": 2,
+      "tp": 16,
+      "accuracy": 0.9944598337950139,
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353,
+      "specificity": 1.0,
+      "auc": 0.9993521218011013
+    }
+  },
+  "inventory_summary": {
+    "total_files": 1024,
+    "pdf_files": 78,
+    "python_files": 55,
+    "csv_files": 63
+  },
+  "inventory_top_groups": [
+    [
+      "Scripts",
+      790
+    ],
+    [
+      "IAD",
+      68
+    ],
+    [
+      "Entretiens",
+      42
+    ],
+    [
+      "Littérature",
+      41
+    ],
+    [
+      "Annexes_12",
+      30
+    ],
+    [
+      "Etude de cas",
+      16
+    ],
+    [
+      "Theorie",
+      15
+    ],
+    [
+      "Methodologie",
+      2
+    ]
+  ],
+  "discrepancies": [
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "ETAT",
+      "difference_count": 0,
+      "base_example": "",
+      "other_example": ""
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_ANNONCE",
+      "difference_count": 5,
+      "base_example": "3",
+      "other_example": "2"
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_PRIX",
+      "difference_count": 246,
+      "base_example": "3",
+      "other_example": "2"
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_PROFIL",
+      "difference_count": 273,
+      "base_example": "2",
+      "other_example": "3"
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_DANGER",
+      "difference_count": 56,
+      "base_example": "7",
+      "other_example": "8"
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_ETAT",
+      "difference_count": 0,
+      "base_example": "",
+      "other_example": ""
+    },
+    {
+      "comparison": "exploratory_root_scripts_vs_canonical",
+      "field": "MA_CIBLE",
+      "difference_count": 27,
+      "base_example": "0",
+      "other_example": "1"
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "ETAT",
+      "difference_count": 618,
+      "base_example": "POSITIF",
+      "other_example": "DETECTED"
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_ANNONCE",
+      "difference_count": 0,
+      "base_example": "",
+      "other_example": ""
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_PRIX",
+      "difference_count": 0,
+      "base_example": "",
+      "other_example": ""
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_PROFIL",
+      "difference_count": 0,
+      "base_example": "",
+      "other_example": ""
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_DANGER",
+      "difference_count": 359,
+      "base_example": "10",
+      "other_example": "6"
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_ETAT",
+      "difference_count": 359,
+      "base_example": "3",
+      "other_example": "2"
+    },
+    {
+      "comparison": "case_annex_vs_canonical",
+      "field": "MA_CIBLE",
+      "difference_count": 278,
+      "base_example": "0",
+      "other_example": "1"
+    }
+  ],
+  "report_paths": {
+    "workflow_fig": "../figures/workflow_overview.pdf",
+    "roc_fig": "../figures/roc_curves.pdf",
+    "case_indicator_fig": "../figures/case_indicator_distribution.pdf"
+  }
+}

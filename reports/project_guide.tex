@@ -1,0 +1,138 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\definecolor{accent}{HTML}{1F4E79}
+\definecolor{soft}{HTML}{EAF1F7}
+\definecolor{textgray}{HTML}{4D5966}
+\hypersetup{colorlinks=true, linkcolor=accent, citecolor=accent, urlcolor=accent, pdftitle={MAS LCE project compendium}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setstretch{1.06}
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+{\color{accent}\rule{\textwidth}{1.2pt}}
+\begin{center}
+    {\LARGE\bfseries Project guide}\\[0.4em]
+    {\large Python-only reproduction package for the MAS LCE fraudulent-classified-ads study}\\[0.8em]
+    {\normalsize March 2026}
+\end{center}
+{\color{accent}\rule{\textwidth}{0.6pt}}
+
+\section*{What this package is}
+This package is a self-contained English compendium built from the archived David Graz MAS LCE project. It contains:
+\begin{itemize}[leftmargin=1.5em]
+    \item an article-style reconstruction of the thesis;
+    \item a dedicated integrity and reproducibility audit;
+    \item sanitised canonical datasets that are sufficient to reproduce the published descriptive tables and the archived predictive metrics;
+    \item Python scripts that regenerate tables, figures, manifests, checksums, and PDF reports;
+    \item metadata files that document provenance, version drift, and canonicalisation choices.
+\end{itemize}
+
+\section{Package structure}
+\begin{tabularx}{\textwidth}{p{4.0cm} X}
+\toprule
+Path & Contents \\
+\midrule
+reports/ & Final PDFs and LaTeX sources for the article, audit, and guide \\
+figures/ & Reproduced figures used by the reports \\
+data/canonical/ & Sanitised canonical exploratory and case-study datasets \\
+data/tables/ & CSV tables used in the reports \\
+data/json/ & JSON summaries used to populate the LaTeX reports \\
+data/metadata/ & Source inventory, discrepancy logs, checksums, manifest, and data dictionary \\
+scripts/ & Python-only build and analysis scripts \\
+\bottomrule
+\end{tabularx}
+
+\section{How to rebuild the package}
+The package is designed so that the main build command is a Python script.
+
+\begin{verbatim}
+python scripts/build_all.py --use-packaged-data
+\end{verbatim}
+
+If you also have access to the original extracted \texttt{\_Master\_LCE\_Docs} directory, you can regenerate the canonical datasets and the inventory directly from the source corpus:
+
+\begin{verbatim}
+python scripts/build_all.py --source-root /path/to/_Master_LCE_Docs
+\end{verbatim}
+
+The build script regenerates:
+\begin{itemize}[leftmargin=1.5em]
+    \item canonical CSV datasets;
+    \item descriptive and discrepancy tables;
+    \item ROC and indicator-distribution figures;
+    \item LaTeX files and compiled PDFs;
+    \item a manifest and SHA-256 checksums for all package files.
+\end{itemize}
+
+\section{Canonical datasets}
+Two canonical datasets are bundled because the archive contains multiple versions of the same analyses.
+\begin{itemize}[leftmargin=1.5em]
+    \item \texttt{exploratory\_sample\_canonical.csv} reproduces the exploratory verification sample used by the thesis and by the archived exploratory random-forest script.
+    \item \texttt{case\_study\_sample\_canonical.csv} reproduces the broader case-study sample whose counts and predictive metrics match the final thesis narrative.
+\end{itemize}
+
+Both canonical files are sanitised: personally identifying profile fields, links, message fragments, and contact artefacts were removed because they are not necessary for the quantitative reproduction.
+
+\section{Data dictionary}
+\begin{tabularx}{\textwidth}{p{4.0cm} X}
+\toprule
+Field & Meaning \\
+\midrule
+listing\_id & Stable listing identifier inside the archived dataset \\
+source\_status & Archived manual status (POSITIVE, NEGATIVE, IDENTIFIED, DETECTED) \\
+ad\_text & Listing description text \\
+price\_chf & Listing price in CHF-equivalent numeric form \\
+profile\_creation\_year & Year the seller profile was created; missing for opaque profiles \\
+content\_score / price\_score / profile\_score & Encoded operational indicators used by the original project \\
+fraud\_index & Sum of indicator scores used by the thesis \\
+risk\_target & Binary operational target: 0 = acceptable, 1 = unfavorable \\
+price\_ratio & Derived ratio between listing price and the model-specific market benchmark \\
+\bottomrule
+\end{tabularx}
+
+\section{Integrity and ethics notes}
+The source archive contains 1024 files, including legacy materials that should not be reused operationally. In particular:
+\begin{itemize}[leftmargin=1.5em]
+    \item legacy scraper scripts with embedded credentials were excluded from the compendium;
+    \item early similarity scripts with self-comparison bugs were excluded from the final analysis pipeline;
+    \item reproduction is intentionally offline and depends on archived snapshots rather than fresh scraping.
+\end{itemize}
+
+\section{Reading order}
+For most users, the recommended order is:
+\begin{enumerate}[leftmargin=1.5em]
+    \item read the article-style reconstruction;
+    \item read the integrity audit to understand what was reproduced and what remains uncertain;
+    \item inspect the canonical datasets and the metadata tables if you need technical traceability;
+    \item run \texttt{python scripts/build\_all.py --use-packaged-data} if you want to regenerate all outputs.
+\end{enumerate}
+
+\end{document}

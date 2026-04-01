@@ -1,0 +1,26 @@
+field,description
+listing_id,Integer identifier preserved from the archived dataset.
+title,Listing title.
+price_chf,Numeric listing price in CHF-equivalent form.
+source_status,"Archived manual status, translated to English: POSITIVE, NEGATIVE, IDENTIFIED, or DETECTED."
+ad_text,Listing description text.
+location,Archived location string.
+profile_creation_year,Year the seller profile was created; missing when opaque or absent.
+profile_creation_missing,Binary indicator for missing profile creation year.
+content_score,"Indicator score for content similarity or duplication: 1 unique, 2 similar, 3 duplicated."
+price_score,"Indicator score for price anomaly: 1 market-consistent, 2 underpriced, 3 suspiciously low."
+profile_score,"Indicator score for profile recency: 1 older, 2 intermediate or missing, 3 new."
+fraud_index,Summed indicator index used by the original project.
+manual_state_code,Archived intermediate code reflecting the manual state of the listing in the original project.
+risk_target,"Binary operational target derived from the fraud index: 0 acceptable, 1 unfavorable."
+content_band,Human-readable band derived from content_score.
+price_band,Human-readable band derived from price_score.
+profile_band,Human-readable band derived from profile_score.
+risk_band,Human-readable band derived from the fraud index.
+risk_target_label,Text label for risk_target.
+dataset,Dataset origin within the compendium: exploratory_sample or case_study_sample.
+market_price_chf,Model-specific benchmark price used by the archived scripts.
+price_ratio,Derived ratio price_chf / market_price_chf.
+confirmed_extreme,Binary indicator for manually confirmed POSITIVE or NEGATIVE cases.
+confirmed_positive,Binary indicator for archived POSITIVE cases.
+confirmed_negative,Binary indicator for archived NEGATIVE cases.

@@ -1,0 +1,8 @@
+comparison,field,difference_count,base_example,other_example
+case_annex_vs_canonical,ETAT,618,POSITIF,DETECTED
+case_annex_vs_canonical,MA_ANNONCE,0,,
+case_annex_vs_canonical,MA_PRIX,0,,
+case_annex_vs_canonical,MA_PROFIL,0,,
+case_annex_vs_canonical,MA_DANGER,359,10,6
+case_annex_vs_canonical,MA_ETAT,359,3,2
+case_annex_vs_canonical,MA_CIBLE,278,0,1

@@ -1,0 +1,16 @@
+Build verification performed on 2026-03-31
+
+1. Full rebuild from source archive:
+   python scripts/build_all.py --source-root /mnt/data/master_lce_extracted/_Master_LCE_Docs
+   Result: success
+
+2. Rebuild from packaged canonical data only:
+   python scripts/build_all.py --use-packaged-data
+   Result: success (tested in a clean copied directory)
+
+Rendered PDF verification completed for:
+- reports/final_article.pdf
+- reports/integrity_audit.pdf
+- reports/project_guide.pdf
+
+Visual checks confirmed that the PDFs render correctly and that the package is self-contained.

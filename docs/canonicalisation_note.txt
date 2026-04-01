@@ -1,0 +1,1 @@
+The final compendium uses Scripts/ILCE_etude_de_cas/ILCE_etude_de_cas.csv as the exploratory canonical dataset and Scripts/ILCE_fausses_petites_annonces_2/ILCE_fausses_petites_annonces.csv as the case-study canonical dataset. Alternate copies are retained only through discrepancy tables.

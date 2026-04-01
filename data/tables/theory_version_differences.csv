@@ -1,0 +1,8 @@
+comparison,field,difference_count,base_example,other_example
+exploratory_root_scripts_vs_canonical,ETAT,0,,
+exploratory_root_scripts_vs_canonical,MA_ANNONCE,5,3,2
+exploratory_root_scripts_vs_canonical,MA_PRIX,246,3,2
+exploratory_root_scripts_vs_canonical,MA_PROFIL,273,2,3
+exploratory_root_scripts_vs_canonical,MA_DANGER,56,7,8
+exploratory_root_scripts_vs_canonical,MA_ETAT,0,,
+exploratory_root_scripts_vs_canonical,MA_CIBLE,27,0,1

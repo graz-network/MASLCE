@@ -1,0 +1,165 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+\usepackage{verbatim}
+\definecolor{accent}{HTML}{1F4E79}
+\definecolor{soft}{HTML}{EAF1F7}
+\definecolor{textgray}{HTML}{4D5966}
+\hypersetup{colorlinks=true, linkcolor=accent, citecolor=accent, urlcolor=accent, pdftitle={MAS LCE project compendium}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setstretch{1.06}
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+{\color{accent}\rule{\textwidth}{1.2pt}}
+\begin{center}
+    {\LARGE\bfseries Research-basis integrity and reproducibility audit}\\[0.4em]
+    {\large MAS LCE fraudulent-classified-ads compendium}\\[0.8em]
+    {\normalsize Audit date: March 2026}
+\end{center}
+{\color{accent}\rule{\textwidth}{0.6pt}}
+
+\section*{Executive summary}
+The archived Graz project is sufficiently rich to support a robust English reconstruction, but it is not internally uniform. The compendium inventory identified 1024 files, including 78 PDFs, 55 Python scripts, and 63 CSV files. Quantitative reproduction was only possible after canonicalisation because several bundled datasets and scripts encode different stages of the same analysis pipeline.
+
+At a high level, the audit reaches five conclusions. First, the thesis' descriptive counts are reproducible when the correct canonical datasets are selected. Second, the two published confusion matrices in the thesis appear to swap false positives and false negatives, even though the surrounding metric values are otherwise reproducible. Third, the exploratory classifier in the original script uses a manual-state variable that would not be available in deployment and therefore should not be treated as a clean operational predictor. Fourth, several early scripts contain analytical bugs or unsafe implementation choices and were intentionally excluded from the final compendium. Fifth, the case-study performance claim is strongest when interpreted as prediction of an internally constructed fraud-risk target rather than of universally adjudicated fraud.
+
+\section{Scope of the audit}
+The audit asks four practical questions:
+\begin{enumerate}[leftmargin=1.5em]
+    \item Which files in the archive should be treated as canonical evidence for the final reconstruction?
+    \item Can the principal counts and metrics reported in the thesis be reproduced from archived data and scripts?
+    \item What inconsistencies, risks, or methodological weaknesses are visible in the project corpus?
+    \item What minimum steps are needed to turn the archive into a usable, self-explanatory research compendium?
+\end{enumerate}
+
+\section{Source corpus provenance}
+The complete inventory covers 1024 files. Table~\ref{tab:groups} lists the largest top-level groups in the source tree.
+
+\begin{table}[H]
+\centering
+\caption{Largest top-level source groups in the archived project tree.}
+\label{tab:groups}
+\begin{tabular}{lr}
+\toprule
+Top-level group & File count \\
+\midrule
+Scripts & 790 \\
+IAD & 68 \\
+Entretiens & 42 \\
+Littérature & 41 \\
+Annexes\_12 & 30 \\
+Etude de cas & 16 \\
+Theorie & 15 \\
+Methodologie & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The audit distinguishes between archival completeness and analytic direct use. The inventory preserves the whole project context, but only a smaller set of files is directly used in the quantitative reproduction: the ratification form, the completed thesis, the defense slides, the thematic-analysis note, the canonical exploratory dataset, the canonical case-study dataset, and the two random-forest scripts that most closely correspond to the final metrics.
+
+\section{Canonicalisation decisions}
+Two dataset choices are decisive.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Exploratory sample.} The canonical exploratory file is \texttt{Scripts/ILCE\_etude\_de\_cas/ILCE\_etude\_de\_cas.csv}. It matches the thesis narrative and the exploratory random-forest output. Earlier copies in the root \texttt{Scripts} folder differ in price, profile, and target coding.
+    \item \textbf{Case-study sample.} The canonical case-study file is \texttt{Scripts/ILCE\_fausses\_petites\_annonces\_2/ILCE\_fausses\_petites\_annonces.csv}. The annex file \texttt{Annexe\_12-10.csv} appears to be an earlier snapshot and does not reproduce the final thesis counts.
+\end{itemize}
+
+The case-study choice is especially important because the annex copy differs from the canonical script copy in hundreds of source-status, target, and fraud-index entries. Without canonicalisation, the archive yields inconsistent descriptive totals.
+
+\section{Reproduced quantitative claims}
+\subsection{Exploratory sample}
+The canonical exploratory dataset contains 315 listings. Its source-status counts are reproduced exactly as 114 detected, 80 identified, 7 negative, and 114 positive. The canonical risk-target counts are 34 acceptable and 281 unfavorable.
+
+Running the archived exploratory random-forest logic on the canonical data reproduces the reported metric block: accuracy 0.873, precision 0.914, recall 0.947, F1 0.930, specificity 0.265, and AUC 0.826. The reproduced confusion matrix is (TN, FP, FN, TP) = (9, 25, 15, 266). This differs from the thesis table, which appears to swap FP and FN.
+
+A cleaner rerun excluding \texttt{manual\_state\_code} produces very similar values---accuracy 0.879 and AUC 0.841---which means the exploratory result is not purely an artefact of that variable, even if its inclusion remains methodologically undesirable.
+
+\subsection{Case-study sample}
+The canonical case-study dataset contains 2166 listings. Its source-status counts are reproduced exactly as 343 negative, 18 positive, 259 identified, and 1546 detected. The canonical risk-target counts are 1015 acceptable and 1151 unfavorable.
+
+Running the canonical case-study random-forest logic reproduces the main metric claim: accuracy 0.954, precision 0.940, recall 0.975, F1 0.957, specificity 0.930, and AUC 0.978. The reproduced confusion matrix is (TN, FP, FN, TP) = (944, 71, 29, 1122). Again, the thesis table appears to swap FP and FN.
+
+\subsection{Interpretive caution}
+The strongest published metric block therefore stands up well at the level of numerical reproduction. However, the target itself is an internal fraud-risk label generated from the actionable index. The case-study classifier is consequently best described as a model that predicts \emph{index-based unfavorable risk}, not a definitive judicial truth label.
+
+\section{Detailed discrepancies and version drift}
+Table~\ref{tab:diffs} summarises the main field-level differences between alternate archived versions and the canonical files used in the compendium.
+
+\begin{landscape}
+\begin{table}[H]
+\centering
+\caption{Field-level differences between alternate archived versions and canonical datasets.}
+\label{tab:diffs}
+\scriptsize
+\begin{tabularx}{\linewidth}{p{4.1cm} p{2.3cm} r p{3.0cm} X}
+\toprule
+Comparison & Field & Difference count & Canonical example & Alternate example \\
+\midrule
+exploratory\_root\_scripts\_vs\_canonical & ETAT & 0 &  &  \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_ANNONCE & 5 & 3 & 2 \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_PRIX & 246 & 3 & 2 \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_PROFIL & 273 & 2 & 3 \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_DANGER & 56 & 7 & 8 \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_ETAT & 0 &  &  \\
+exploratory\_root\_scripts\_vs\_canonical & MA\_CIBLE & 27 & 0 & 1 \\
+case\_annex\_vs\_canonical & ETAT & 618 & POSITIF & DETECTED \\
+case\_annex\_vs\_canonical & MA\_ANNONCE & 0 &  &  \\
+case\_annex\_vs\_canonical & MA\_PRIX & 0 &  &  \\
+case\_annex\_vs\_canonical & MA\_PROFIL & 0 &  &  \\
+case\_annex\_vs\_canonical & MA\_DANGER & 359 & 10 & 6 \\
+case\_annex\_vs\_canonical & MA\_ETAT & 359 & 3 & 2 \\
+case\_annex\_vs\_canonical & MA\_CIBLE & 278 & 0 & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+\end{landscape}
+
+\section{Integrity findings}
+\subsection{Finding 1: swapped confusion-matrix cells in the thesis tables}
+Both reproduced classifiers yield metric blocks that match the thesis, but the published confusion matrices do not align with those metrics. In both cases, the most plausible explanation is a swap between false positives and false negatives during table transcription. This is a presentation error rather than a failure of the archived script outputs.
+
+\subsection{Finding 2: exploratory-script leakage through manual-state coding}
+The exploratory script uses \texttt{MA\_ETAT} (renamed \texttt{manual\_state\_code} in the compendium) as a predictor. In the archived data, that variable encodes whether a listing was manually confirmed or merely detected or identified. Because such information is unavailable before manual review, it should not be treated as a deployment-ready predictor.
+
+\subsection{Finding 3: early similarity scripts contain a self-comparison bug}
+Some earlier statistics scripts compute Jaccard similarity by comparing each text string to itself. In that configuration, the similarity score is trivially 1.0 for every row and therefore unusable as evidence of between-listing similarity. Those scripts were not used in the final compendium.
+
+\subsection{Finding 4: unsafe legacy scraping code}
+The archived project contains legacy scraper files with embedded login credentials. These files were excluded from the final compendium and should never be redistributed or executed. The compendium is intentionally offline and reproduction is restricted to archived snapshots rather than renewed scraping.
+
+\subsection{Finding 5: labels at the extremes are stronger than labels in the middle}
+The archive contains manually confirmed positives and negatives, but the broad binary target used by the predictive models is derived from the internal fraud index. Ancillary validation on the confirmed-positive or confirmed-negative subset remains strong (case-study subset AUC 0.999; exploratory subset AUC 0.914), yet those subsets are small and represent the extremes of the phenomenon rather than its full operational ambiguity.
+
+\section{Overall assessment}
+The audit concludes that the research basis is \textbf{fit for a documented article-style reconstruction and for an operational pilot}. The conceptual framework is coherent, the qualitative material is aligned with the quantitative indicators, and the most important numerical claims can be reproduced from the archive after canonicalisation. At the same time, the project is \textbf{not yet a publication-grade machine-learning benchmark} in the strictest sense. To reach that standard, future work would need stronger independent labels, cleaner version control, explicit separation between development and validation files, and removal of all legacy scripts that embed credentials or use analytically invalid similarity routines.
+
+In practical terms, the final compendium resolves the main usability problems of the archive: it identifies canonical data files, sanitises sensitive content, documents discrepancies, and packages the full reconstruction in English with Python-only reproducibility.
+
+\end{document}
