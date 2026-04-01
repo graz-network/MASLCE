@@ -1,0 +1,16 @@
+# Core data handling
+pandas>=1.5
+numpy>=1.23
+
+# Machine learning
+scikit-learn>=1.2
+
+# Visualization
+matplotlib>=3.7
+
+# Utilities (optional but recommended)
+scipy>=1.10
+
+# For LaTeX compilation helper (no Python package needed, but noted)
+# Requires system installation:
+# - pdflatex (TeX Live / MiKTeX)
