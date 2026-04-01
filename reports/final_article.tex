@@ -41,8 +41,7 @@
 {\color{accent}\rule{\textwidth}{1.2pt}}
 \begin{center}
     {\LARGE\bfseries Toward an Actionable Model for Proactive Detection of Fraudulent Online Classified Ads}\\[0.4em]
-    {\large English article-style reconstruction of the David Graz MAS LCE project}\\[0.8em]
-    {\normalsize Prepared from the archived MAS LCE project corpus and reproduced with a Python-only compendium}\\[0.2em]
+    {\large David Graz and OpenAI}\\[0.8em]
     {\small March 2026}
 \end{center}
 {\color{accent}\rule{\textwidth}{0.6pt}}
@@ -51,6 +50,8 @@
 This article reconstructs and redesigns, in English and in article form, the 2024 MAS LCE master thesis by David Graz on the proactive detection of fraudulent online classified ads. The reconstructed study asks a practical operational question: how can suspicious listings be detected efficiently and reliably before they generate additional victims? The archived project combines a ratified research design, a completed thesis, defense slides, interview material, quantitative data files, scripts, and supporting literature. The underlying model operationalises three indicators---price anomaly, content similarity or duplication, and profile recency---within an actionable fraud index inspired by the actionable-knowledge framework of Avenier and Schmitt, Ribaux's indicia methodology, and Dupont's ecosystemic view of cybercrime. Reproduction required canonicalisation because multiple file versions coexist in the archive. Using the canonical exploratory sample ($n=315$) and the canonical case-study sample ($n=2166$), the compendium reproduces the thesis' descriptive counts and closely reproduces its predictive metrics. The case-study random-forest model reaches accuracy 0.954, precision 0.940, recall 0.975, specificity 0.930, and AUC 0.978. The study's main contribution is therefore best understood as an operational triage model for index-based fraud risk, not as a final adjudicative classifier of legally proven fraud. Within that scope, the reconstructed research remains coherent and practically relevant.
 
 \textbf{Keywords:} online classified ads; fraud detection; money mules; actionable knowledge; cybercrime; fraud risk indexing
+
+{\newpage}
 
 \section{Introduction}
 Fraudulent classified ads sit at the intersection of cyber-enabled fraud, digital consumer risk, and intelligence-led policing. In the original Graz study, the problem was framed around low-value but high-volume online fraud capable of recruiting money mules, facilitating phishing-like payment diversion, and eroding trust in e-commerce. The core question was operational rather than purely theoretical: how can fraudulent online listings be detected \emph{efficiently} and \emph{reliably}? The project proposed that three recurring signs---an implausibly low asking price, repeated or duplicated content, and recently created or opaque seller profiles---could be translated into an actionable model for proactive detection.
@@ -147,6 +148,8 @@ The reconstructed study remains bounded by the original design. The datasets are
 
 \section{Conclusion}
 Reconstructed as an article and backed by a documented Python compendium, the Graz MAS LCE project offers a credible and practically relevant approach to proactive detection of fraudulent online classified ads. The evidence supports the usefulness of a three-indicator operational model built around price anomaly, content reuse, and profile recency. The broader lesson is methodological: in fast-moving cybercrime settings, operational value often comes from converting scattered practitioner knowledge into transparent, auditable, and updateable indices. Read in that way, the project succeeds. It provides a defensible starting point for a pilot deployment, while the companion integrity audit clarifies the data-governance and evaluation work still needed for stronger publication-grade claims.
+
+{\newpage}
 
 \begin{thebibliography}{99}
 \bibitem{alrousan2020} Al-Rousan, S., Abuhussein, A., Alsubaei, F., Collen, L., \& Shiva, S. (2020). Ads-Guard: Detecting scammers in online classified ads. \emph{2020 IEEE Symposium Series on Computational Intelligence}, 1492--1498.

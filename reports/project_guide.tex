@@ -20,6 +20,9 @@
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{pdflscape}
+\usepackage{pdfpages}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
 \usepackage{verbatim}
 \definecolor{accent}{HTML}{1F4E79}
 \definecolor{soft}{HTML}{EAF1F7}
@@ -134,5 +137,12 @@ For most users, the recommended order is:
     \item inspect the canonical datasets and the metadata tables if you need technical traceability;
     \item run \texttt{python scripts/build\_all.py --use-packaged-data} if you want to regenerate all outputs.
 \end{enumerate}
+
+\section{Complete bibliography inherited from the original thesis}
+The original thesis contains a bibliography than could reasonably be cited in the body of every articles. The complete bibliography inherited from the thesis is reproduced below. It preserves the original documentary basis while every article uses a tighter, argument-driven set of cited references.
+
+\includepdf[pages=45-52,pagecommand={\thispagestyle{empty}}]{source_thesis_french.pdf}
+
+
 
 \end{document}

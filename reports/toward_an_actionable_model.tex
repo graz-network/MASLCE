@@ -1,0 +1,320 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.25cm]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+
+\definecolor{accent}{HTML}{163A5F}
+\definecolor{softline}{HTML}{D7E2EE}
+\definecolor{textgray}{HTML}{495867}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  citecolor=accent,
+  urlcolor=accent,
+  pdftitle={Toward an Actionable Model for Proactive Detection of Fraudulent Online Classified Ads},
+  pdfauthor={David Graz (article adaptation prepared for publication-jury review)}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\setstretch{1.08}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.4em, itemsep=0.2em, topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=0.2em, topsep=0.2em}
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\captionsetup{font=small,labelfont=bf}
+\urlstyle{same}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcommand{\tightrule}{\color{softline}\rule{\textwidth}{0.7pt}}
+
+\begin{document}
+
+{\color{accent}\rule{\textwidth}{1.2pt}}
+\begin{center}
+    {\LARGE\bfseries Toward an Actionable Model for Proactive Detection of Fraudulent Online Classified Ads}\\[0.35em]
+    {\large David Graz and OpenAI}\\[0.8em]
+    {\small March 2026}
+\end{center}
+{\color{accent}\rule{\textwidth}{0.65pt}}
+
+\section*{Abstract}
+This article transforms David Graz's 2024 French-language MAS LCE thesis into a standard English academic paper suitable for publication-jury review. The original research asked a practice-oriented question: how can fraudulent online classified ads be detected efficiently and reliably before additional victims are harmed? The study combines an exploratory qualitative phase with a quantitative validation phase. Six exploratory interviews involving nine cybercrime practitioners were used to formalise a three-indicator detection model based on price anomaly, content similarity or duplication, and profile recency. The quantitative stage operationalised these indicators as an additive fraud index and then validated an \emph{acceptable} versus \emph{unfavorable} risk target through random-forest classification on two archived Facebook Marketplace samples: an exploratory verification sample ($n=315$) and a broader case-study sample ($n=2166$). Reproduction from the archived corpus confirms the internal coherence of the main case-study result (accuracy 0.954, precision 0.940, recall 0.975, specificity 0.930, AUC 0.978), while also revealing limits that matter for publication-grade interpretation: design drift between the ratified proposal and the finished thesis, a small number of manually confirmed positives in the larger sample, confusion-matrix transcription errors in the thesis tables, and legacy scripts that are not analytically valid in their original form. The article argues that the study's strongest contribution is not a universal fraud classifier but an actionable, auditable, and updateable risk-indexing method for proactive screening. Framed as an exploratory mixed-methods contribution to cybercrime prevention and platform governance, the research is publication-worthy provided its claims remain bounded to operational risk triage rather than judicial proof of fraud.
+
+\textbf{Keywords:} online classified ads; fraud detection; actionable knowledge; cybercrime; mixed methods; random forest; fraud-risk indexing
+
+{\newpage}
+
+\section{Introduction}
+Fraudulent online classified ads are a low-individual-loss but high-volume form of cyber-enabled fraud. They matter not because each single listing necessarily generates spectacular losses, but because they scale quickly, exploit routine digital commerce, and can act as entry points to broader criminal processes such as payment diversion, phishing, or money-mule recruitment. Graz's original thesis approached the problem from an operational security perspective: practitioners and platforms need screening tools that work \emph{before} victims complain, not only after the fact.
+
+The original project therefore asked how fraudulent listings can be detected \emph{efficiently} and \emph{reliably}. That question was already present in the ratified research design and remained central in the final thesis. The proposed answer was to convert practitioner knowledge into an actionable detection model built on a small set of recurring signs: implausibly low prices, repetitive or duplicated ad content, and recently created or opaque seller profiles. In the completed thesis, these signs were formalised into indicator scores, aggregated into an index, and used to build a predictive model on manually collected Facebook Marketplace data.
+
+This article serves three purposes. First, it converts the thesis into a standard academic-article format in English. Second, it explains the full research process clearly enough for publication-jury scrutiny. Third, it offers a complete critical evaluation of the research work on the basis of the archived project corpus and a documented reproduction pipeline. The result is not only a rewritten article, but an academically tightened interpretation of what the research does well, where its evidence is strongest, and where its claims must remain cautious.
+
+\section{Research question, rationale, and theoretical positioning}
+The study sits at the intersection of cybercrime prevention, online-marketplace governance, and intelligence-led investigation. Three theoretical anchors structure the argument.
+
+First, the thesis draws on the actionable-knowledge framework developed by Avenier and Schmitt. Their central insight is that research for action should convert dispersed know-how into knowledge that is sufficiently intelligible, credible, and transmissible to guide real decisions. In Graz's project, this meant transforming scattered practitioner intuition about suspicious listings into a limited number of operational indicators.
+
+Second, the study relies on Ribaux's indicia methodology. Fraudulent listings are treated as digital traces that can be interpreted through recurrent signs and inferential combinations. The research logic is therefore neither purely behavioural nor purely technical; it is trace-based. Price, text, and profile metadata are not taken as proof in themselves, but as operational clues that accumulate toward a reasoned judgement of risk.
+
+Third, the project is consistent with Dupont's ecosystemic view of cybercrime. Fraud in online classifieds does not emerge in a vacuum. It develops within a fragmented digital environment where responsibilities are shared among platforms, users, police services, regulators, and private security actors. The model's practical value therefore lies in creating a common warning language across several actors rather than in offering a self-sufficient police instrument.
+
+The broader research literature on online classified-ad fraud and adjacent scam ecosystems converges on similar indicators. Prior work highlights highly attractive offers, repeated content, low-credibility seller identities, evasive payment behaviour, and the use of automation or templated language in deceptive listings. Machine-learning approaches have also shown that these signals can be operationalised, but the literature frequently depends on proprietary data or highly technical pipelines. Graz's thesis is distinctive because it attempts to stay close to operational practice and to work with comparatively accessible indicators.
+
+\section{Materials and methods}
+\subsection{Study basis and documentary reconstruction}
+The article is grounded in four layers of evidence preserved in the archived project corpus:
+\begin{enumerate}
+    \item the ratification form, which defines the original research question, the initial theoretical plan, and the intended mixed-methods design;
+    \item the completed thesis, which reports the final methodology, datasets, results, and discussion;
+    \item the defence slides, which clarify the study's applied framing and headline findings;
+    \item the wider archive of scripts, annexed datasets, interview reports, and working files, which makes reproduction and critical evaluation possible.
+\end{enumerate}
+
+For publication purposes, the research basis was reconstructed through canonicalisation. The archive contains multiple script and data versions, including drafts, backups, and obsolete files. The final article therefore relies on the canonical datasets and reproduced results documented in the associated Python compendium rather than treating every archived file as equally valid.
+
+\subsection{Overall design: sequential exploratory mixed methods}
+At the level of research design, the thesis follows a sequential exploratory mixed-methods logic. A qualitative phase comes first and is used to generate categories, interpret the phenomenon, and formulate a theoretical detection model. A quantitative phase follows and tests whether the operationalised model can distinguish between lower-risk and higher-risk listings on real-world marketplace data.
+
+This overall structure is coherent and publication-worthy. It is especially suitable for research questions where tacit practitioner knowledge exists but is fragmented and where the phenomenon remains partly under-specified. In this case, the qualitative phase produced the indicator logic and the quantitative phase tested whether the resulting scoring structure held up on larger samples.
+
+\begin{table}[H]
+\centering
+\caption{Research process and evidence chain reconstructed for the article.}
+\begin{tabularx}{\textwidth}{p{2.1cm} p{3.2cm} Y Y}
+\toprule
+\textbf{Phase} & \textbf{Primary activity} & \textbf{Original research output} & \textbf{Publication-jury interpretation} \\
+\midrule
+1 & Ratification and framing & Operational question, initial literature plan, intended mixed-method design & Clear practical research problem with explicit preventive orientation \\
+2 & Literature review & Conceptual anchors on cybercrime, actionable knowledge, and indicia-based investigation & Sound interdisciplinary framing, though broad rather than tightly delimited \\
+3 & Exploratory interviews & Six interviews involving nine specialists from Swiss cybercrime practice & Strong foundation for inductive model-building and operational relevance \\
+4 & Theory building & Three-indicator model: price anomaly, content similarity, profile recency & Coherent operationalisation of practitioner knowledge \\
+5 & Quantitative data collection & Manual extraction of Facebook Marketplace listing data into structured datasets & Ethically cautious but labour-intensive and platform-specific evidence base \\
+6 & Indicator scoring & Additive fraud index and binary risk target & Transparent rule-based layer that remains auditable \\
+7 & Predictive modelling & Random-forest validation of acceptable vs unfavorable risk & High internal performance on the operational target \\
+8 & Critical reproduction & Canonicalisation, script review, metric reruns, discrepancy analysis & Necessary step for publication-grade reliability and bounded interpretation \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Qualitative phase}
+The qualitative phase comprised six exploratory interviews involving nine specialists working in cybercrime-relevant roles across several francophone Swiss policing environments. The thesis used semi-structured interviewing and thematic analysis. This phase is important because the project's contribution depends less on discovering an unknown phenomenon than on restructuring known but fragmented practical knowledge into a shareable framework.
+
+The archived thematic materials reveal seven recurring themes: fragmented institutional responsibilities, recurrent fraud indicators, the absence of proactive tools, the transnational character of the activity, prevention as a necessary lever, pessimism about the trend's future growth, and cooperation bottlenecks between security actors and platforms. These themes are methodologically useful because they justify the article's later emphasis on ecosystemic prevention and on the modest, triage-oriented status of the resulting model.
+
+\begin{table}[H]
+\centering
+\caption{Qualitative themes retained in the reconstructed article.}
+\begin{tabularx}{\textwidth}{p{3.5cm} Y Y}
+\toprule
+\textbf{Theme} & \textbf{Substantive meaning} & \textbf{Operational consequence} \\
+\midrule
+Fragmented responsibilities & Enforcement and prevention are distributed across cantons, platforms, and private actors. & Detection tools must be interpretable by multiple stakeholders. \\
+Recurring fraud indicators & Low prices, repeated text, weak profile credibility, and unusual payment patterns recur across interviews. & These observations justify the three-indicator model and its possible extensions. \\
+Absence of proactive tools & Practitioners describe predominantly reactive workflows. & A screening tool is valuable only if it can be used before victimisation. \\
+Transnational activity & A share of listings is linked to actors operating across borders. & Local detection must be coupled with broader intelligence and cooperation. \\
+Prevention as leverage & Small losses accumulate and are difficult to prosecute efficiently. & Risk-index communication may support warning systems and platform-side labels. \\
+Pessimism about evolution & Interviewees expect volume and automation to increase. & The model must remain revisable rather than fixed. \\
+Cooperation bottlenecks & Limited judicial cooperation and weak platform engagement reduce enforcement effectiveness. & The practical value of the model lies in triage and governance support, not only prosecution. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Quantitative phase and data basis}
+The ratified proposal initially envisaged a corpus of false-ad cases and a broader dataset from Swiss classified-ad platforms such as anibis.ch and petitesannonces.ch. The final thesis, however, centred its quantitative work on Facebook Marketplace. This evolution is not fatal to the study, but it is an important part of the critical evaluation because it narrows the study's effective empirical scope.
+
+Two canonical datasets are retained in the publication compendium. The first is an exploratory verification sample of 315 listings, designed to test the theoretical model on a more suspicion-rich corpus. The second is a broader case-study sample of 2166 listings, intended as the main practical stress test. Both datasets were assembled through manual extraction of public listing information from Facebook Marketplace. Recorded variables include title, price, ad description, broad location string, and seller-profile creation year when visible.
+
+\begin{table}[H]
+\centering
+\caption{Canonical quantitative basis used in the article.}
+\begin{tabularx}{\textwidth}{p{3.4cm} c Y Y}
+\toprule
+\textbf{Dataset} & \textbf{$n$} & \textbf{Archived manual states} & \textbf{Operational risk target} \\
+\midrule
+Exploratory verification sample & 315 & 114 detected; 80 identified; 7 negative; 114 positive & 34 acceptable; 281 unfavorable \\
+Case-study sample & 2166 & 1546 detected; 259 identified; 343 negative; 18 positive & 1015 acceptable; 1151 unfavorable \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The distinction between \emph{source status} and \emph{risk target} is essential. \emph{Detected}, \emph{identified}, \emph{negative}, and \emph{positive} are archived manual states. \emph{Acceptable} and \emph{unfavorable} are the operational classes derived from the fraud index used for predictive modelling. The classifier is therefore best understood as learning consistency with an internal fraud-risk target rather than legal truth in the strict sense.
+
+\subsection{Data collection ethics and constraints}
+The final thesis opted for manual extraction rather than automated large-scale scraping. This choice is methodologically slower but ethically and legally more cautious. The thesis explicitly limited collection to public listing fields and stated that personal data would not be reused after the study. It also discussed the platform's \texttt{robots.txt} restrictions and legal concerns connected to terms of service, data protection, and copyright.
+
+For publication-jury purposes, this is a mixed picture. On the positive side, the author showed awareness of legal and ethical constraints. On the limiting side, manual extraction reduces scale, makes replication expensive, and prevents direct observation of many platform-side signals that might improve classification quality.
+
+\subsection{Operationalisation of the model}
+The original thesis operationalised the detection model through three indicator scores and an additive fraud index. The reconstructed article retains that structure because it is simple, interpretable, and central to the study's practical contribution.
+
+\begin{table}[H]
+\centering
+\caption{Operationalisation of the three-indicator model.}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{1.5cm} Y}
+\toprule
+\textbf{Indicator} & \textbf{Score range} & \textbf{Operational meaning} \\
+\midrule
+Content similarity & 1--3 & 1 = unique content; 2 = similar content; 3 = duplicated content. The archived logic uses Jaccard-style similarity thresholds with TS = 0.15 and TU = 0.85. \\
+Price anomaly & 1--3 & 1 = market-consistent; 2 = underpriced; 3 = suspiciously low. The archived thresholds use RPN = 0.90 and RPS = 0.50 against product-specific market benchmarks. \\
+Profile recency & 1--3 & 1 = older profile; 2 = intermediate or missing profile age; 3 = newly created profile. \\
+Fraud index & 3--9 in canonical data & Additive sum of the three scores. The original decision threshold defines \emph{acceptable} risk at index $\leq 5$ and \emph{unfavorable} risk at index $>5$. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+This rule-based layer is one of the study's strongest features. Even where the predictive model is later criticised or revised, the index remains understandable and auditable. That is a major advantage in settings where operators must explain why a listing was flagged.
+
+\subsection{Predictive modelling and reproduction}
+The thesis used a random-forest classifier with 100 estimators and stratified cross-validation. In reproduction, two quantitative checks were especially important. The first was to rerun the archived modelling logic on canonicalised data. The second was to separate the original archived script results from cleaned reruns when an archived script used variables that would not be appropriate in deployment.
+
+The exploratory modelling script is a good example. Its archived version includes a manual-state predictor that is not a deployment-available field. The clean rerun without this feature yields performance very similar to the original script, which preserves the study's substantive finding but also justifies a methodological caution. The case-study result is much stronger and more stable under reproduction.
+
+\section{Results}
+\subsection{Exploratory verification sample}
+The exploratory sample is heavily enriched in suspicious listings, and its class balance reflects that design choice. Of 315 archived listings, 281 are labelled as \emph{unfavorable} and only 34 as \emph{acceptable}. Within this sample, suspiciously low prices dominate the unfavorable-risk group (86.1\%), and no market-consistent listing falls into the unfavorable-risk class. Content similarity is also common: 79.4\% of unfavorable-risk listings belong to the \emph{similar} band and 10.3\% to the \emph{duplicated} band. Older profiles are absent from the unfavorable-risk group.
+
+The reproduced predictive performance on the exploratory sample is respectable but not publication-definitive. The archived script yields accuracy 0.873, precision 0.914, recall 0.947, specificity 0.265, and AUC 0.826. The low specificity matters: the model detects higher-risk listings well, but it is weak at protecting lower-risk listings from false alarms in this suspicion-rich sample. The clean rerun without the manual-state predictor remains close in performance, which suggests that the conceptual model itself retains value even after a stricter implementation.
+
+\subsection{Case-study sample}
+The case-study sample is the thesis' principal quantitative result. Here the class balance is much closer to parity: 1015 acceptable-risk listings and 1151 unfavorable-risk listings. Indicator distributions align with the study's hypotheses. Among unfavorable-risk listings, 40.3\% are \emph{suspiciously low} in price and 12.2\% are \emph{duplicated} in content. Profile recency is particularly important: only 4.3\% of unfavorable-risk listings originate from older profiles, while 50.6\% come from intermediate or missing profiles and 45.1\% from new profiles.
+
+The manually confirmed extremes are also informative. Among the 18 manually confirmed positive listings in the case-study sample, 77.8\% belong to the duplicated-content band and 88.9\% to the suspiciously low-price band. None comes from an older profile. By contrast, the manually confirmed legitimate listings cluster far more strongly in the market-consistent or merely underpriced bands. These comparisons support the substantive relevance of the three-indicator model even if the number of confirmed positives is small.
+
+\begin{table}[H]
+\centering
+\caption{Reproduced predictive performance.}
+\begin{tabularx}{\textwidth}{p{4.8cm} c c c c c c}
+\toprule
+\textbf{Evaluation} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{Specificity} & \textbf{AUC} \\
+\midrule
+Exploratory sample, archived script & 0.873 & 0.914 & 0.947 & 0.930 & 0.265 & 0.826 \\
+Exploratory sample, clean rerun & 0.879 & 0.912 & 0.957 & 0.934 & 0.235 & 0.841 \\
+Case-study sample, archived script & 0.954 & 0.940 & 0.975 & 0.957 & 0.930 & 0.978 \\
+Confirmed-extremes validation, exploratory sample & 0.983 & 0.983 & 1.000 & 0.991 & 0.714 & 0.914 \\
+Confirmed-extremes validation, case-study sample & 0.994 & 1.000 & 0.889 & 0.941 & 1.000 & 0.999 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The case-study classifier's internal performance is the clearest quantitative argument in favour of the research. Yet the associated claim must be stated carefully: the model discriminates very well between the article's operational risk classes. It does not establish that every listing in the unfavorable-risk class is legally proven fraud.
+
+\section{Critical evaluation of the research work}
+\subsection{Substantive and methodological strengths}
+The first strength of the research is conceptual economy. Rather than proposing a technically opaque system, the thesis builds a model that operators can understand, audit, and revise. This makes the study especially relevant for practice-oriented criminology, cybercrime prevention, and platform moderation.
+
+The second strength is mixed-method coherence. The qualitative phase is not ornamental; it genuinely informs the indicator structure later used in the quantitative phase. The thematic findings, the scoring logic, and the eventual classifier form a recognisable chain of reasoning.
+
+The third strength is transparency at the indicator level. Price anomaly, content duplication, and profile recency are not hidden features extracted from black-box embeddings. They are explicit variables that can be discussed with investigators, platform moderators, or prevention officers.
+
+The fourth strength is practical relevance. The study addresses a widespread form of digital fraud where institutions often remain reactive because losses per case are individually small. In such settings, an interpretable triage mechanism can have genuine preventive value.
+
+\subsection{Weaknesses, limits, and integrity issues}
+A complete evaluation also requires clear statement of the article's weaknesses.
+
+\textbf{Design drift.} The ratified proposal envisaged a corpus spread across Swiss classified-ad platforms and framed a broader mixed-method ambition. The finished thesis concentrated its final quantitative evidence on Facebook Marketplace. This does not invalidate the project, but it narrows the empirical reach of its claims.
+
+\textbf{Restricted external validity.} Product concentration is high, especially around iPhone listings. Platform concentration is even stronger. The study therefore supports a claim about an operational pattern within a specific digital environment, not a universal theory of online listing fraud.
+
+\textbf{Operational target versus judicial truth.} The predictive model was trained primarily on a target derived from the fraud index itself. This is analytically useful for screening, but it means the strongest metric claims concern alignment with an internal risk target rather than direct adjudication accuracy.
+
+\textbf{Sparse confirmed positives in the larger sample.} The case-study sample contains only 18 manually confirmed positive listings. This is enough to remain substantively informative, but too small to ground large claims about confirmed-fraud prevalence or generalisation.
+
+\textbf{Reproducibility issues in the archive.} The critical reproduction step found several issues that matter for publication quality. The confusion-matrix tables in the thesis swap false positives and false negatives. One exploratory modelling script uses a manual-state feature that should not be considered a deployable predictor. Legacy similarity scripts in the archive compare texts to themselves and are analytically invalid. Credential-bearing scraper files also existed in the raw archive and were appropriately excluded from the publication compendium.
+
+\textbf{False positives generated by commercial behaviour.} The thesis itself notes that some flagged listings were not fraudulent but aggressive commercial postings that mimicked fraud-like signals, especially through duplicated content and recent-profile behaviour. This is a valuable empirical insight, but it also reminds us that suspiciousness and illegality are not identical.
+
+\begin{table}[H]
+\centering
+\caption{Publication-jury appraisal of the research work.}
+\begin{tabularx}{\textwidth}{p{3.0cm} p{2.2cm} Y Y}
+\toprule
+\textbf{Criterion} & \textbf{Assessment} & \textbf{Reasoning} & \textbf{Implication for publication} \\
+\midrule
+Originality & Strong & The novelty lies in actionable formalisation of practitioner knowledge rather than algorithmic novelty. & Suitable for a practice-oriented contribution. \\
+Methodological coherence & Strong & The qualitative-to-quantitative sequence is logically connected and substantively interpretable. & Publishable as an exploratory mixed-method study. \\
+Data adequacy & Moderate & Data are informative but platform- and product-specific, with few confirmed positives in the broader sample. & Claims must remain context-bounded. \\
+Reproducibility & Moderate after audit & Archive version drift required canonicalisation and correction of reporting inconsistencies. & Publish with explicit reproducibility note and bounded metric claims. \\
+Ethics and legality & Moderate-to-strong & The project recognised platform, privacy, and copyright constraints and relied on public fields. & Ethically defensible, though manual collection limits scale. \\
+Generalisability & Limited & Evidence is strongest for Facebook Marketplace iPhone listings in the studied context. & Avoid universal claims about all online-classified fraud. \\
+Overall publication readiness & Positive with framing conditions & The study is strong as an operational risk-index paper, weaker as a universal fraud-classification benchmark. & Recommended for jury review if presented as exploratory, applied, and critically bounded. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Overall publication-jury judgement}
+Taken as a whole, the research is publication-worthy provided it is framed correctly. The strongest article is not one that overstates technical novelty or universality. It is one that presents the study as an exploratory mixed-method contribution to proactive fraud-risk screening, emphasises interpretability, documents the indicator logic, and states clearly that the predictive target is an operational risk category rather than a legal verdict.
+
+In that form, the article has real merit. It shows how practitioner knowledge can be translated into a defensible operational model; it grounds the model in a trace-based logic; and it produces strong internal case-study performance while remaining honest about its empirical limits.
+
+\section{Implications for practice and research}
+Three implications deserve emphasis.
+
+First, platforms and public authorities can use the model as a shared screening language. Even when they do not share full data access, they can align around interpretable indicators and thresholds.
+
+Second, future research should widen the evidence base beyond one platform and one dominant product family. A multi-platform, multi-category dataset would be the most direct route to stronger external validity.
+
+Third, later studies should separate three targets more clearly: confirmed fraud, operational suspicion, and platform-policy violation. Graz's thesis made an important start by operationalising suspicion; publication-stage follow-up work should now push harder on independent ground truth and on cross-context validation.
+
+\section{Conclusion}
+This jury-ready article demonstrates that the original thesis contains a coherent and valuable research contribution once it is reframed in standard academic form and critically evaluated. The research succeeds in formalising a small but effective set of fraud indicators into an actionable index for proactive screening of online classified ads. Its case-study predictive performance is genuinely strong, and its mixed-method reasoning is robust enough to support publication as an applied research paper.
+
+The complete evaluation presented here also shows why framing matters. The study should be read neither as a final statement on universal fraud detection nor as a substitute for legal investigation. Its real contribution is more useful and arguably more durable: it offers a transparent, auditable, and operationally meaningful method for identifying higher-risk listings in a context where purely reactive enforcement remains insufficient. On those terms, the research is ready for publication-jury examination.
+
+{\newpage}
+
+\appendix
+
+\section*{Cited references}
+{\small
+\begin{list}{}{
+  \setlength{\leftmargin}{1.4em}
+  \setlength{\itemindent}{-1.4em}
+  \setlength{\itemsep}{0.38em}
+  \setlength{\parsep}{0pt}
+}
+\item Al-Rousan, S., Abuhussein, A., Alsubaei, F., Collen, L., \& Shiva, S. (2020). Ads-Guard: Detecting scammers in online classified ads. \emph{2020 IEEE Symposium Series on Computational Intelligence}, 1492--1498.
+\item Alzghoul, J. R., Abdallah, E. E., \& Al-khawaldeh, A. S. (2024). Fraud in online classified ads: Strategies, risks, and detection methods. \emph{Journal of Applied Security Research, 19}(1), 45--69.
+\item Avenier, M.-J., \& Schmitt, C. (2007a). Élaborer des savoirs actionnables et les communiquer à des managers. \emph{Revue française de gestion, 174}(5), 25--42.
+\item Avenier, M.-J., \& Schmitt, C. (2007b). \emph{La construction de savoirs pour l'action}. L'Harmattan.
+\item Dupont, B. (2024). \emph{La cybercriminalité: Approche écosystémique de l'espace numérique}. Armand Colin.
+\item Fortin, M.-F., \& Gagnon, J. (2022). \emph{Fondements et étapes du processus de recherche: Méthodes quantitatives et qualitatives} (4th ed.). Chenelière éducation.
+\item Jacquart, B., Schopfer, A., \& Rossy, Q. (2021). Mules financières: Profils, recrutement et rôles de facilitateur pour les escroqueries aux fausses annonces. \emph{Revue internationale de criminologie et de police technique et scientifique, 74}(4), 409--426.
+\item Mokhberi, A., Huang, Y., Humbert, G., Obada-Obieh, B., Mehrabi Koushki, M., \& Beznosov, K. (2024). Trust, privacy, and safety factors associated with decision making in P2P markets based on social networks: A case study of Facebook Marketplace in USA and Canada. \emph{Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems}, 1--25.
+\item Powers, D. M. W. (2020). Evaluation: From precision, recall and F-measure to ROC, informedness, markedness and correlation. \emph{arXiv}.
+\item Ribaux, O. (2023). \emph{De la police scientifique à la traçologie: Le renseignement par la trace}. Presses polytechniques et universitaires romandes.
+\item Rossy, Q., \& Borisova, B. (2020). Escroqueries par Internet. In \emph{Cybercrimes et enjeux technologiques: Contexte et perspectives} (pp. 227--250).
+\item Saumya, S., \& Singh, J. P. (2022). Spam review detection using LSTM autoencoder: An unsupervised approach. \emph{Electronic Commerce Research, 22}(1), 113--133.
+\item Thomas, D. R. (2006). A general inductive approach for analyzing qualitative evaluation data. \emph{American Journal of Evaluation, 27}(2), 237--246.
+\end{list}
+}
+
+\end{document}
