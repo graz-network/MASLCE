@@ -30,6 +30,7 @@
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \setstretch{1.06}
+\setcounter{tocdepth}{1}
 \titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
 \captionsetup{font=small,labelfont=bf}
@@ -51,7 +52,11 @@ This article reconstructs and redesigns, in English and in article form, the 202
 
 \textbf{Keywords:} online classified ads; fraud detection; money mules; actionable knowledge; cybercrime; fraud risk indexing
 
-{\newpage}
+\newpage
+
+\tableofcontents
+
+\newpage
 
 \section{Introduction}
 Fraudulent classified ads sit at the intersection of cyber-enabled fraud, digital consumer risk, and intelligence-led policing. In the original study, the problem was framed around low-value but high-volume online fraud capable of recruiting money mules, facilitating phishing-like payment diversion, and eroding trust in e-commerce. The core question was operational rather than purely theoretical: how can fraudulent online listings be detected \emph{efficiently} and \emph{reliably}? The project proposed that three recurring signs---an implausibly low asking price, repeated or duplicated content, and recently created or opaque seller profiles---could be translated into an actionable model for proactive detection.
@@ -72,7 +77,7 @@ The original project translated these indicators into a fraud index and then int
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{../figures/workflow_overview.pdf}
+    \includegraphics[width=0.95\textwidth]{../figures/workflow_overview.png}
     \caption{Workflow used in the final research compendium: source corpus, canonicalisation, quantitative reproduction, and final deliverables.}
 \end{figure}
 
@@ -114,13 +119,13 @@ The qualitative and descriptive layers point in the same direction. Price anomal
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\textwidth]{../figures/roc_curves.pdf}
+    \includegraphics[width=0.80\textwidth]{../figures/roc_curves.png}
     \caption{Cross-validated ROC curves reproduced from the canonical exploratory and case-study datasets.}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.98\textwidth]{../figures/case_indicator_distribution.pdf}
+    \includegraphics[width=0.98\textwidth]{../figures/case_indicator_distribution.png}
     \caption{Indicator composition in the canonical case-study dataset. The confirmed-positive row uses the archive's manually confirmed positive cases only.}
 \end{figure}
 

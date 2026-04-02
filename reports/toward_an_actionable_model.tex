@@ -46,6 +46,7 @@
 \setlength{\parindent}{0pt}
 \setlist[itemize]{leftmargin=1.4em, itemsep=0.2em, topsep=0.2em}
 \setlist[enumerate]{leftmargin=1.5em, itemsep=0.2em, topsep=0.2em}
+\setcounter{tocdepth}{1}
 \titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
 \captionsetup{font=small,labelfont=bf}
@@ -69,7 +70,11 @@ This article transforms David Graz's 2024 French-language MAS LCE thesis into a 
 
 \textbf{Keywords:} online classified ads; fraud detection; actionable knowledge; cybercrime; mixed methods; random forest; fraud-risk indexing
 
-{\newpage}
+\newpage
+
+\tableofcontents
+
+\newpage
 
 \section{Introduction}
 Fraudulent online classified ads are a low-individual-loss but high-volume form of cyber-enabled fraud. They matter not because each single listing necessarily generates spectacular losses, but because they scale quickly, exploit routine digital commerce, and can act as entry points to broader criminal processes such as payment diversion, phishing, or money-mule recruitment. Graz's original thesis approached the problem from an operational security perspective: practitioners and platforms need screening tools that work \emph{before} victims complain, not only after the fact.

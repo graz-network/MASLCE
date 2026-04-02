@@ -24,6 +24,7 @@
 \usepackage{ragged2e}
 \usepackage{etoolbox}
 \usepackage{verbatim}
+\usepackage[backend=biber, style=numeric]{biblatex}
 \definecolor{accent}{HTML}{1F4E79}
 \definecolor{soft}{HTML}{EAF1F7}
 \definecolor{textgray}{HTML}{4D5966}
@@ -38,6 +39,7 @@
 \captionsetup{font=small,labelfont=bf}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
+\addbibresource{MASLCE.bib}
 
 \begin{document}
 {\color{accent}\rule{\textwidth}{1.2pt}}
@@ -114,7 +116,9 @@ source\_status & Archived manual status (POSITIVE, NEGATIVE, IDENTIFIED, DETECTE
 ad\_text & Listing description text \\
 price\_chf & Listing price in CHF-equivalent numeric form \\
 profile\_creation\_year & Year the seller profile was created; missing for opaque profiles \\
-content\_score / price\_score / profile\_score & Encoded operational indicators used by the original project \\
+content\_score  & Encoded operational indicator used by the original project \\
+price\_score  & Encoded operational indicator used by the original project \\
+profile\_score & Encoded operational indicator used by the original project \\
 fraud\_index & Sum of indicator scores used by the thesis \\
 risk\_target & Binary operational target: 0 = acceptable, 1 = unfavorable \\
 price\_ratio & Derived ratio between listing price and the model-specific market benchmark \\
@@ -141,7 +145,8 @@ For most users, the recommended order is:
 \section{Complete bibliography inherited from the original thesis}
 The original thesis contains a bibliography than could reasonably be cited in the body of every articles. The complete bibliography inherited from the thesis is reproduced below. It preserves the original documentary basis while every article uses a tighter, argument-driven set of cited references.
 
-\includepdf[pages=45-52,pagecommand={\thispagestyle{empty}}]{source_thesis_french.pdf}
+\nocite{*}
+\printbibliography
 
 
 

@@ -51,6 +51,7 @@
 \setlength{\parindent}{0pt}
 \setlist[itemize]{leftmargin=1.45em,itemsep=0.18em,topsep=0.18em}
 \setlist[enumerate]{leftmargin=1.5em,itemsep=0.18em,topsep=0.18em}
+\setcounter{tocdepth}{1}
 \titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
 \captionsetup{font=small,labelfont=bf}
@@ -81,7 +82,11 @@ This article reworks the MASLCE thesis \emph{\`Elaboration d'un modele actionnab
 
 \textbf{Keywords:} fraud detection; online classified ads; proactive screening; cybercrime; economic crime; actionable knowledge; auditability; risk triage
 
-{\newpage}
+\newpage
+
+\tableofcontents
+
+\newpage
 
 \section{Introduction}
 Fraudulent online listings are a classic example of a low-individual-loss but high-volume crime problem. A single deceptive listing may generate a relatively modest loss, yet the phenomenon becomes strategically important because the model scales, replicates quickly, exploits routine digital commerce, and frequently remains below the threshold of strong institutional reaction. The MASLCE thesis developed by David Graz began from exactly that operational tension. In the ratified project design, the research question was framed in plain and practice-oriented terms: how can fraudulent small ads be detected efficiently and reliably? The underlying concern was not merely academic description. It was the persistent difficulty of acting \emph{before} victim complaints accumulate, evidence disappears, and the most useful traces have already been lost.

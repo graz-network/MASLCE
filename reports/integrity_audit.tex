@@ -35,6 +35,7 @@
 \captionsetup{font=small,labelfont=bf}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
+\setcounter{tocdepth}{1}
 
 \begin{document}
 {\color{accent}\rule{\textwidth}{1.2pt}}
@@ -50,7 +51,11 @@ The archived MASLCE project is sufficiently rich to support a robust English rec
 
 At a high level, the audit reaches five conclusions. First, the thesis' descriptive counts are reproducible when the correct canonical datasets are selected. Second, the two published confusion matrices in the thesis appear to swap false positives and false negatives, even though the surrounding metric values are otherwise reproducible. Third, the exploratory classifier in the original script uses a manual-state variable that would not be available in deployment and therefore should not be treated as a clean operational predictor. Fourth, several early scripts contain analytical bugs or unsafe implementation choices and were intentionally excluded from the final compendium. Fifth, the case-study performance claim is strongest when interpreted as prediction of an internally constructed fraud-risk target rather than of universally adjudicated fraud.
 
-{\newpage}
+\newpage
+
+\tableofcontents
+
+\newpage
 
 \section{Scope of the audit}
 The audit asks four practical questions:
@@ -120,7 +125,7 @@ Table~\ref{tab:diffs} summarises the main field-level differences between altern
 \caption{Field-level differences between alternate archived versions and canonical datasets.}
 \label{tab:diffs}
 \scriptsize
-\begin{tabularx}{\linewidth}{p{4.1cm} p{2.3cm} r p{3.0cm} X}
+\begin{tabularx}{\linewidth}{p{15cm} p{2.3cm} r p{3.0cm} X}
 \toprule
 Comparison & Field & Difference count & Canonical example & Alternate example \\
 \midrule
