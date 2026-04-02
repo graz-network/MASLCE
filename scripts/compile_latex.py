@@ -1,56 +1,107 @@
+from pathlib import Path
 import subprocess
-import os
+import shutil
 import sys
 
-# Bash
-# python compile_latex.py actionable_model_article.tex
 
-def compile_latex(tex_file, runs=2, clean_aux=True):
-    """
-    Compile a LaTeX file into PDF using pdflatex.
+def compile_tex_file(tex_file: Path) -> bool:
+    tex_file = tex_file.resolve()
+    workdir = tex_file.parent
 
-    Parameters:
-    - tex_file (str): Path to the .tex file
-    - runs (int): Number of compilation runs (default=2 for references)
-    - clean_aux (bool): Remove auxiliary files after compilation
-    """
+    # 1) Compiler recommandé si disponible
+    latexmk = shutil.which("latexmk")
+    if latexmk:
+        cmd = [
+            latexmk,
+            "-pdf",
+            "-interaction=nonstopmode",
+            "-halt-on-error",
+            tex_file.name,
+        ]
+    else:
+        # 2) Fallback vers pdflatex (deux passes)
+        pdflatex = shutil.which("pdflatex")
+        if not pdflatex:
+            print(f"[ERREUR] Aucun compilateur LaTeX trouvé pour: {tex_file}")
+            print("         Installe 'latexmk' ou 'pdflatex'.")
+            return False
 
-    if not os.path.exists(tex_file):
-        print(f"Error: File '{tex_file}' not found.")
+        try:
+            for i in range(2):
+                result = subprocess.run(
+                    [
+                        pdflatex,
+                        "-interaction=nonstopmode",
+                        "-halt-on-error",
+                        tex_file.name,
+                    ],
+                    cwd=workdir,
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+            print(f"[OK] {tex_file}")
+            return True
+
+        except subprocess.CalledProcessError as e:
+            print(f"[ECHEC] {tex_file}")
+            print(e.stdout)
+            print(e.stderr)
+            return False
+
+    # Cas latexmk
+    try:
+        result = subprocess.run(
+            cmd,
+            cwd=workdir,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        print(f"[OK] {tex_file}")
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"[ECHEC] {tex_file}")
+        print(e.stdout)
+        print(e.stderr)
+        return False
+
+
+def compile_all_tex_files(root_dir: str) -> None:
+    root = Path(root_dir).resolve()
+
+    if not root.exists() or not root.is_dir():
+        print(f"[ERREUR] Répertoire invalide: {root}")
+        sys.exit(1)
+
+    tex_files = sorted(root.rglob("*.tex"))
+
+    if not tex_files:
+        print(f"Aucun fichier .tex trouvé dans {root}")
         return
 
-    base_name = os.path.splitext(tex_file)[0]
+    print(f"{len(tex_files)} fichier(s) .tex trouvé(s) dans {root}\n")
 
-    try:
-        for i in range(runs):
-            print(f"Compilation pass {i+1}...")
-            result = subprocess.run(
-                ["pdflatex", "-interaction=nonstopmode", tex_file],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
+    success = 0
+    failed = 0
 
-            if result.returncode != 0:
-                print("LaTeX compilation error:")
-                print(result.stdout)
-                print(result.stderr)
-                return
+    for tex_file in tex_files:
+        if compile_tex_file(tex_file):
+            success += 1
+        else:
+            failed += 1
 
-        print(f"\n✅ PDF successfully generated: {base_name}.pdf")
-
-    finally:
-        if clean_aux:
-            extensions = [".aux", ".log", ".out", ".toc"]
-            for ext in extensions:
-                aux_file = base_name + ext
-                if os.path.exists(aux_file):
-                    os.remove(aux_file)
+    print("\n--- Résumé ---")
+    print(f"Succès : {success}")
+    print(f"Échecs : {failed}")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python compile_latex.py <file.tex>")
-    else:
-        tex_file = sys.argv[1]
-        compile_latex(tex_file)
+    # Usage:
+    # python compile_all_tex.py /chemin/vers/le/repertoire
+    if len(sys.argv) != 2:
+        print("Usage: python compile_all_tex.py ../reports")
+        sys.exit(1)
+
+    compile_all_tex_files(sys.argv[1])
